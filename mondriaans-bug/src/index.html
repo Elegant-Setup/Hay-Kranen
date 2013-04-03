@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Mondrian's Bug</title>
+        <style>
+            /* Some really minimal styling */
+            canvas {
+                border: 1px solid #999;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- This is the element that will hold the final composition -->
+        <canvas id="canvas"></canvas>
+
+        <!-- Load the class definition -->
+        <script src="bug.js"></script>
+        <script>
+            // Initialize the new class, feel free to change the height/width
+            // and multiplier arguments to experiment a little :)
+            var bug = new Bug({
+                el : document.getElementById('canvas'),
+                height : 600,
+                imgsrc : 'img.png',
+                multiplier : 1.5,
+                width : 600
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Mondriaan's Bug</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                font-family: Helvetica, Arial, sans-serif;
+            }
+
+            html, body, #wrapper {
+                width: 100%;
+                height: 100%;
+            }
+
+            #wrapper {
+                padding: 10px;
+            }
+
+            #wrapper > div {
+                float: left;
+                padding: 20px;
+                width: 50%;
+                height: 100%;
+            }
+
+            #img {
+                overflow: hidden;
+                position: relative;
+            }
+
+            #img > div {
+                width: 100%;
+                height: 100%;
+                -webkit-transition: 0.5s ease all;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            #img.gallery .gallery,
+            #img.canvas .canvas {
+                top: 0%;
+            }
+
+            #img.canvas .gallery,
+            #img.gallery .canvas {
+                top: -100%;
+            }
+
+            #img .gallery {
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center center;
+                position: relative;
+            }
+
+            #img .gallery .multiplier {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 5px;
+                font-size: 20px;
+                color: black;
+            }
+
+            #img .canvas input,
+            #img .canvas button,
+            #img .canvas label {
+                font-size: 20px;
+                float: left;
+                clear: left;
+                margin-bottom: 10px;
+            }
+
+            #info-wrapper {
+                overflow: auto;
+            }
+
+            h1 {
+                padding-bottom: 10px;
+                border-bottom: 10px dotted red;
+                line-height: 30px;
+                margin-bottom: 15px;
+            }
+
+            h2 {
+                display: inline;
+                float: right;
+                padding: 0 0 10px 10px;
+            }
+
+            a {
+                text-decoration: none;
+
+            }
+
+            p {
+                font-size: 20px;
+                padding-bottom: 20px;
+            }
+
+            .make {
+                float: right;
+            }
+
+            .button {
+                font-size: 20px;
+                border: 1px solid #666;
+                border-radius: 20px;
+                padding: 0 10px;
+                background: -webkit-linear-gradient(top, white, #999);
+                background: -moz-linear-gradient(top, white, #999);
+                background: linear-gradient(top, white, #999);
+                color: #666;
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+                cursor: pointer;
+                font-weight: bold;
+                text-transform: lowercase;
+            }
+
+            .button:hover {
+                background: #aaa;
+                background: -webkit-linear-gradient(top, #999, white);
+                background: -moz-linear-gradient(top, #999, white);
+                background: linear-gradient(top, #999, white);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="img" class="gallery">
+                <div class="gallery">
+                    <div class="multiplier"></div>
+                </div>
+                <div class="canvas">
+                    <label for="multiplier">Voer een getal in (breuken werken goed, b.v. 1.5)<br />
+                    <b>Let op:</b> het kan enkele seconden tot minuten duren voor je bug klaar is!
+                    </label>
+                    <input class="multiplier" name="multiplier" placeholder="1.5" />
+                    <button class="button">Maak een bug</button>
+                </div>
+            </div>
+
+            <div id="info-wrapper">
+                <div id="info">
+                    <h1>
+                        Mondriaan's Bug
+                        <a href="" class="button make">Maak zelf een bug</a>
+                    </h1>
+                    <h2>Door <a href="http://www.haykranen.nl">Hay Kranen</a></h2>
+
+                    <p>Mondriaan maakte "Victory Boogie Woogie" op intuïtie. Code is niet intuitief: een computerprogramma schrijft simpelweg voor wat er moet gebeuren. Met "Mondriaan's Bug" hoop ik iets van dat onvoorspelbare gevoel van de creatie van een kunstwerk terug te brengen in code door gebruik te maken van een bug.</p>
+
+                    <p>Bugs in code zijn net zo oud als code zelf. Er gebeurt iets wat je niet verwacht, meestal is dat niet de bedoeling (een programma crasht, een knop doet niet wat het moet doen), maar bij mijn inzending voegt het feit dat je niet weet wat er precies zal gebeuren juist iets toe.</p>
+
+                    <p>"Mondriaan's Bug" ontstond door een fout die ik maakte met onverwacht gevolg bij het creëren van een probeersel: ik wilde een plaatje van de VBW tekenen op het scherm. Ik doe dat door een reproductie van het werk in te lezen, en vervolgens pixel voor pixel dat na te tekenen op een canvas.</p>
+
+                    <p>Maar bij het tekenen gebeurde er iets geks: geks: de computer tekent wel de afbeelding, maar gehavend. Het komt denk ik door afrondingsfouten bij het bepalen van de kleuren van de pixels.</p>
+
+                    <p>Het resultaat heeft naar mijn mening een wrange schoonheid die iets weg heeft van het werk van Francis Bacon en Jackson Pollock's "Drip Paintings".</p>
+
+                    <p>Links zie je screenshots van <b>Mondriaan's Bug</b> gemaakt met verschillende instellingen. Klik op de knop rechtsboven
+                        om zelf een variant te maken (dit kan een paar seconden tot minuten duren).</p>
+
+                    <p><a href="src/bug.js">Klik hier</a> om de code te bekijken.</p>
+                </div>
+            </div>
+        </div>
+
+        <script src="src/bug.js"></script>
+        <script>
+        (function() {
+            var isRendered = false;
+
+            function $(s) {
+                return document.querySelector( s );
+            }
+
+            function gallery() {
+                var $gallery = $('#img .gallery');
+                var $multiplier = $("#img .gallery .multiplier");
+
+                var images = [
+                    "0.5.png",
+                    "1.5.png",
+                    "0.7.png",
+                    "0.75.png",
+                    "1.8.png",
+                    "2.25.png",
+                    "3.png",
+                    "4.5.png",
+                ];
+
+                var imgNr = 0;
+
+                function change() {
+                    imgNr = (imgNr + 1) % images.length;
+                    var src = 'screenshots/' + images[ imgNr ];
+                    $gallery.style.backgroundImage = 'url(' + src + ')';
+                    $multiplier.innerHTML = images[ imgNr ].replace('.png', '');
+                    setTimeout(change, 3000);
+                }
+
+                change();
+            }
+
+            function canvas() {
+                var $canvas = $("#img .canvas");
+                var $multiplier = $("#img .canvas .multiplier");
+                var $button = $("#img button");
+
+                $button.onclick = function() {
+                    $canvas.innerHTML = "<canvas></canvas>";
+
+                    var $ccanvas = $canvas.querySelector('canvas');
+                    var width = $canvas.clientWidth;
+                    var height = $canvas.clientHeight;
+                    $ccanvas.clientWidth = width;
+                    $ccanvas.clientHeight = height;
+
+                    var bug = new Bug({
+                        el : $canvas.querySelector('canvas'),
+                        height : height,
+                        imgsrc : 'src/img.png',
+                        multiplier : $multiplier.value || $multiplier.placeholder,
+                        width : width
+                    });
+
+                    isRendered = true;
+                }
+            }
+
+            function make() {
+                var $img = $("#img");
+                var $make = $(".make");
+
+                $make.onclick = function() {
+                    if (isRendered) {
+                        window.location = window.location + '?again';
+                    }
+
+                    var className = $img.className === 'gallery' ? 'canvas' : 'gallery';
+                    $img.className = className;
+
+                    return false;
+                }
+            }
+
+            gallery();
+            make();
+            canvas();
+
+            if (window.location.href.indexOf("?again") !== -1) {
+                $(".make").click();
+            }
+        })();
+        </script>
+    </body>
+</html>
